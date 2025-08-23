@@ -1,0 +1,107 @@
+name: Build Docs and Deploy to Production
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+    types: [ closed ]
+  workflow_dispatch:
+
+jobs:
+  build-update-and-deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        
+      - name: Build MkDocs site
+        run: mkdocs build
+        
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+      - name: Create or update docs-site branch
+        run: |
+          # Check if docs-site branch exists
+          if git show-ref --verify --quiet refs/heads/docs-site; then
+            echo "docs-site branch exists, switching to it"
+            git checkout docs-site
+          else
+            echo "Creating new docs-site branch"
+            git checkout --orphan docs-site
+            git rm -rf .
+          fi
+          
+          # Copy built site to root
+          cp -r site/* .
+          
+          # Add all files
+          git add .
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update docs site from main branch - $(date)"
+            git push origin docs-site
+          fi
+          
+      - name: Setup SSH for Production Deployment
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          
+      - name: Deploy to Production Server from docs-site branch
+        run: |
+          # Deploy all files from current docs-site branch to production
+          scp -r * "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_DIR }}/"
+          
+      - name: Verify Deployment
+        run: |
+          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" "ls -la ${{ secrets.SERVER_DIR }}"
+          
+      - name: Cleanup SSH
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa
+          rm -f ~/.ssh/known_hosts
+          
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          
+      - name: Deploy to Production Server
+        run: |
+          # Deploy all files from docs-site branch to production
+          scp -r * "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_DIR }}/"
+          
+      - name: Verify Deployment
+        run: |
+          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" "ls -la ${{ secrets.SERVER_DIR }}"
+          
+      - name: Cleanup SSH
+        if: always()
+        run: |
+          rm -f ~/.ssh/id_rsa
+          rm -f ~/.ssh/known_hosts
