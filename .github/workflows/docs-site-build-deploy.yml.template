@@ -12,6 +12,10 @@ jobs:
   build-update-and-deploy:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     
     steps:
       - name: Checkout main branch
@@ -19,11 +23,12 @@ jobs:
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
           
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.13'
           
       - name: Install dependencies
         run: pip install -r requirements.txt
@@ -59,7 +64,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "Update docs site from main branch - $(date)"
-            git push origin docs-site
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git docs-site
           fi
           
       - name: Setup SSH for Production Deployment
@@ -72,28 +77,6 @@ jobs:
       - name: Deploy to Production Server from docs-site branch
         run: |
           # Deploy all files from current docs-site branch to production
-          scp -r * "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_DIR }}/"
-          
-      - name: Verify Deployment
-        run: |
-          ssh "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}" "ls -la ${{ secrets.SERVER_DIR }}"
-          
-      - name: Cleanup SSH
-        if: always()
-        run: |
-          rm -f ~/.ssh/id_rsa
-          rm -f ~/.ssh/known_hosts
-          
-      - name: Setup SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
-          
-      - name: Deploy to Production Server
-        run: |
-          # Deploy all files from docs-site branch to production
           scp -r * "${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:${{ secrets.SERVER_DIR }}/"
           
       - name: Verify Deployment
