@@ -1,0 +1,80 @@
+/* Custom footer styling */
+.footer {
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  border-top: 1px solid #e1e4e8;
+  color: #586069;
+  font-size: 14px;
+}
+
+/* Style the copyright text */
+.rst-footer-buttons {
+  border-top: 1px solid #e1e4e8;
+  padding-top: 20px;
+}
+
+/* Additional footer customization for ReadTheDocs theme */
+footer {
+  text-align: center;
+  margin-top: 2em;
+  padding-top: 1em;
+  border-top: 1px solid #ccc;
+}
+
+/* Code block copy button styling */
+.code-block-wrapper {
+  position: relative;
+}
+
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+  color: #333;
+}
+
+.code-block-wrapper:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background: #e8e8e8;
+  border-color: #ccc;
+}
+
+.copy-button:active {
+  background: #ddd;
+}
+
+.copy-button.copied {
+  background: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+/* Ensure code blocks have relative positioning */
+.codehilite,
+.highlight,
+pre {
+  position: relative;
+}
+
+/* Style for the copy icon */
+.copy-button::before {
+  content: "📋";
+  margin-right: 4px;
+}
+
+.copy-button.copied::before {
+  content: "✓";
+}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>LAMP Stack Hosting - Web Server Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "LAMP Stack Hosting";
+        var mkdocs_page_input_path = "hosting/lamp.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c++.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/md.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Web Server Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Web Server Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../config/system/">System Configuration</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Web Hosting Documentation</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../ssh/">SSH Configuration</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">LAMP Stack Hosting</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#steps">Steps</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#step-1-uploading-files">Step 1: Uploading files</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#using-virtualmin-gui">Using Virtualmin GUI</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#using-scp">Using SCP</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-2-create-mysql-database">Step 2: Create MySQL database</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#retrive-password">Retrive Password</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#databases">Databases</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-3-configure-application">Step 3: Configure Application</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#step-4-access-phpmyadmin">Step 4: Access phpMyAdmin</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Web Server Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Web Hosting Documentation</li>
+      <li class="breadcrumb-item active">LAMP Stack Hosting</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="lamp-stack-hosting">LAMP Stack Hosting</h1>
+<p>In order to host a LAMP<sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> website an account is needed.</p>
+<h2 id="steps">Steps</h2>
+<h3 id="step-1-uploading-files">Step 1: Uploading files</h3>
+<h4 id="using-virtualmin-gui">Using Virtualmin GUI</h4>
+<ol>
+<li>Go to the <a href="https://cse.pstu.ac.bd:10000">Webmin Panel</a></li>
+<li>Use credentials to log in and open the Dashboard</li>
+<li>Navigate to <strong>File Manager</strong> from the menu on the left side, it should open the <code>/home/username/public_html</code> directory</li>
+<li>Upload files from the <code>File</code> menu</li>
+</ol>
+<h4 id="using-scp">Using SCP</h4>
+<p>For advanced users, files can be uploaded using <code>SCP</code>. But in order to use <code>SCP</code>, you will need the SSH key configured on your device.</p>
+<h3 id="step-2-create-mysql-database">Step 2: Create MySQL database</h3>
+<h4 id="retrive-password">Retrive Password</h4>
+<ol>
+<li>Go to <code>Dashboard</code> &gt; <code>Edit Databases</code> &gt; <code>Passwords</code></li>
+<li>Copy the <em>password</em> under <em>MariaDB database</em> or change it to as you want</li>
+</ol>
+<h4 id="databases">Databases</h4>
+<p>A database in the name of the user is created in default e.g., <code>username_db</code></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can create database from <code>Edit Databases</code> menu</p>
+</div>
+<p>Go to <code>Create a new database</code> option and follow through the process</p>
+<h3 id="step-3-configure-application">Step 3: Configure Application</h3>
+<p>Information for connection variables or strings should be as follows:</p>
+<pre class="highlight"><code class="language-bash">host: localhost
+port: 3306
+database_name: username_db
+username: your_username
+password: your_password</code></pre>
+<p>You will get your <em>Database Password</em> from <strong>Step 2</strong>.</p>
+<h3 id="step-4-access-phpmyadmin">Step 4: Access phpMyAdmin</h3>
+<p>Though database can some what be managed from Virtualmin GUI, it would be more easy to interact using <code>phpMyAdmin</code>.</p>
+<ol>
+<li>Visit <a href="https://cse.pstu.ac.bd/phpmyadmin">phpMyAdmin Panel</a></li>
+<li>Provide your <code>username</code> and <code>password</code> obtained from <strong>Step 2</strong>.</li>
+</ol>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p>LAMP <em>stands for</em> Linux, Apache, MySQL, and PHP&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../ssh/" class="btn btn-neutral float-left" title="SSH Configuration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../ssh/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../js/copy-code.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

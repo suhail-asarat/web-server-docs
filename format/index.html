@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Markdown Formatting Guide - Web Server Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/custom.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Markdown Formatting Guide";
+        var mkdocs_page_input_path = "format.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c++.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/bash.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/json.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/md.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Web Server Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Web Server Configuration</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../config/system/">System Configuration</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Web Hosting Documentation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../hosting/ssh/">SSH Configuration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../hosting/lamp/">LAMP Stack Hosting</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Web Server Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Markdown Formatting Guide</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="markdown-formatting-guide">Markdown Formatting Guide</h1>
+<p>This guide covers the most commonly used Markdown syntax with examples for MkDocs with the ReadTheDocs theme.</p>
+<h2 id="headers">Headers</h2>
+<pre class="highlight"><code class="language-markdown"># H1 Header
+## H2 Header
+### H3 Header
+#### H4 Header
+##### H5 Header
+###### H6 Header</code></pre>
+<p><strong>Result:</strong></p>
+<p><strong>H1 Header</strong> (largest)<br />
+<strong>H2 Header</strong> (large)<br />
+<strong>H3 Header</strong> (medium)<br />
+<strong>H4 Header</strong> (small)<br />
+<strong>H5 Header</strong> (smaller)<br />
+<strong>H6 Header</strong> (smallest)</p>
+<hr />
+<h2 id="text-formatting">Text Formatting</h2>
+<h3 id="basic-formatting">Basic Formatting</h3>
+<pre class="highlight"><code class="language-markdown">**Bold text**
+*Italic text*
+***Bold and italic***
+~~Strikethrough~~
+`Inline code`</code></pre>
+<p><strong>Result:</strong></p>
+<p><strong>Bold text</strong><br />
+<em>Italic text</em><br />
+<strong><em>Bold and italic</em></strong><br />
+~~Strikethrough~~<br />
+<code>Inline code</code></p>
+<h3 id="paragraphs-and-line-breaks">Paragraphs and Line Breaks</h3>
+<pre class="highlight"><code class="language-markdown">This is a paragraph.
+
+This is another paragraph separated by a blank line.
+
+This line ends with two spaces  
+and continues on the next line.</code></pre>
+<p><strong>Result:</strong></p>
+<p>This is a paragraph.</p>
+<p>This is another paragraph separated by a blank line.</p>
+<p>This line ends with two spaces<br />
+and continues on the next line.</p>
+<hr />
+<h2 id="lists">Lists</h2>
+<h3 id="unordered-lists">Unordered Lists</h3>
+<pre class="highlight"><code class="language-markdown">- Item 1
+- Item 2
+  - Nested item 2.1
+  - Nested item 2.2
+- Item 3
+
+* Alternative bullet
+* Another item</code></pre>
+<p><strong>Result:</strong></p>
+<ul>
+<li>Item 1</li>
+<li>Item 2<ul>
+<li>Nested item 2.1</li>
+<li>Nested item 2.2</li>
+</ul>
+</li>
+<li>
+<p>Item 3</p>
+</li>
+<li>
+<p>Alternative bullet</p>
+</li>
+<li>Another item</li>
+</ul>
+<h3 id="ordered-lists">Ordered Lists</h3>
+<pre class="highlight"><code class="language-markdown">1. First item
+2. Second item
+   1. Nested item 2.1
+   2. Nested item 2.2
+3. Third item</code></pre>
+<p><strong>Result:</strong></p>
+<ol>
+<li>First item</li>
+<li>Second item<ol>
+<li>Nested item 2.1</li>
+<li>Nested item 2.2</li>
+</ol>
+</li>
+<li>Third item</li>
+</ol>
+<h3 id="task-lists">Task Lists</h3>
+<pre class="highlight"><code class="language-markdown">- [x] Completed task
+- [ ] Incomplete task
+- [x] Another completed task</code></pre>
+<p><strong>Result:</strong></p>
+<ul>
+<li>[x] Completed task</li>
+<li>[ ] Incomplete task</li>
+<li>[x] Another completed task</li>
+</ul>
+<hr />
+<h2 id="links-and-images">Links and Images</h2>
+<h3 id="links">Links</h3>
+<pre class="highlight"><code class="language-markdown">[Link text](https://example.com)
+[Link with title](https://example.com "This is a title")
+[Internal link](index.md)
+&lt;https://example.com&gt;</code></pre>
+<p><strong>Result:</strong></p>
+<p><a href="https://example.com">Link text</a><br />
+<a href="https://example.com" title="This is a title">Link with title</a><br />
+<a href="../">Internal link</a><br />
+<a href="https://example.com">https://example.com</a></p>
+<h3 id="images">Images</h3>
+<pre class="highlight"><code class="language-markdown">![Alt text](img/favicon.ico)
+![Alt text](img/favicon.ico "Image title")</code></pre>
+<p><strong>Result:</strong></p>
+<p><img alt="Alt text" src="../img/favicon.ico" />
+<img alt="Alt text" src="../img/favicon.ico" title="Image title" /></p>
+<hr />
+<h2 id="code">Code</h2>
+<h3 id="inline-code">Inline Code</h3>
+<pre class="highlight"><code class="language-markdown">Use `backticks` for inline code like `print("Hello")`.</code></pre>
+<p><strong>Result:</strong></p>
+<p>Use <code>backticks</code> for inline code like <code>print("Hello")</code>.</p>
+<h3 id="code-blocks">Code Blocks</h3>
+<p><strong>Syntax:</strong></p>
+<pre class="highlight"><code class="language-markdown">```python
+def hello_world():
+    print("Hello, World!")
+    return True
+```</code></pre>
+<p><strong>Result:</strong></p>
+<pre class="highlight"><code class="language-python">def hello_world():
+    print("Hello, World!")
+    return True</code></pre>
+<p><strong>More examples:</strong></p>
+<pre class="highlight"><code class="language-javascript">function helloWorld() {
+    console.log("Hello, World!");
+    return true;
+}</code></pre>
+<pre class="highlight"><code class="language-bash"># Bash commands
+ls -la
+cd /path/to/directory</code></pre>
+<pre class="highlight"><code class="language-yaml"># YAML example
+site_name: My Docs
+nav:
+  - Home: index.md
+  - About: about.md</code></pre>
+<hr />
+<h2 id="tables">Tables</h2>
+<pre class="highlight"><code class="language-markdown">| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Row 1    | Data     | More data|
+| Row 2    | Data     | More data|
+
+| Left Aligned | Center Aligned | Right Aligned |
+|:-------------|:--------------:|--------------:|
+| Left         | Center         | Right         |
+| Text         | Text           | Text          |</code></pre>
+<p><strong>Result:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Column 1</th>
+<th>Column 2</th>
+<th>Column 3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Row 1</td>
+<td>Data</td>
+<td>More data</td>
+</tr>
+<tr>
+<td>Row 2</td>
+<td>Data</td>
+<td>More data</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Left Aligned</th>
+<th style="text-align: center;">Center Aligned</th>
+<th style="text-align: right;">Right Aligned</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Left</td>
+<td style="text-align: center;">Center</td>
+<td style="text-align: right;">Right</td>
+</tr>
+<tr>
+<td style="text-align: left;">Text</td>
+<td style="text-align: center;">Text</td>
+<td style="text-align: right;">Text</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="admonitions-info-boxes">Admonitions (Info Boxes)</h2>
+<p>MkDocs supports admonitions for creating styled info boxes, warnings, tips, and notes.</p>
+<h3 id="basic-admonitions">Basic Admonitions</h3>
+<pre class="highlight"><code class="language-markdown">!!! note
+    This is a note admonition.
+
+!!! tip
+    This is a helpful tip!
+
+!!! warning
+    This is a warning message.
+
+!!! danger
+    This is a danger alert!
+
+!!! info
+    This is an info box.
+
+!!! success
+    This indicates success!
+
+!!! failure
+    This indicates failure.
+
+!!! question
+    This is a question box.
+
+!!! example
+    This is an example box.
+
+!!! quote
+    This is a quote box.</code></pre>
+<p><strong>Result:</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is a note admonition.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This is a helpful tip!</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is a warning message.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>This is a danger alert!</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>This is an info box.</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">Success</p>
+<p>This indicates success!</p>
+</div>
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p>This indicates failure.</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>This is a question box.</p>
+</div>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>This is an example box.</p>
+</div>
+<div class="admonition quote">
+<p class="admonition-title">Quote</p>
+<p>This is a quote box.</p>
+</div>
+<h3 id="custom-titles">Custom Titles</h3>
+<pre class="highlight"><code class="language-markdown">!!! note "Custom Note Title"
+    You can customize the title of any admonition.
+
+!!! warning "Important Warning"
+    Make sure to read this carefully!</code></pre>
+<p><strong>Result:</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Custom Note Title</p>
+<p>You can customize the title of any admonition.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Important Warning</p>
+<p>Make sure to read this carefully!</p>
+</div>
+<h3 id="collapsible-admonitions">Collapsible Admonitions</h3>
+<pre class="highlight"><code class="language-markdown">??? note "Click to expand"
+    This content is hidden by default.
+
+!!! note "Always visible"
+    This content is always visible.
+
+???+ tip "Expanded by default"
+    This starts expanded but can be collapsed.</code></pre>
+<p><strong>Result:</strong></p>
+<p>??? note "Click to expand"
+    This content is hidden by default.</p>
+<div class="admonition note">
+<p class="admonition-title">Always visible</p>
+<p>This content is always visible.</p>
+</div>
+<p>???+ tip "Expanded by default"
+    This starts expanded but can be collapsed.</p>
+<h3 id="admonitions-with-multiple-paragraphs">Admonitions with Multiple Paragraphs</h3>
+<pre class="highlight"><code class="language-markdown">!!! info "Complex Content"
+    You can include multiple paragraphs in admonitions.
+
+    - Lists work too
+    - Second item
+
+    ```python
+    # Code blocks are supported
+    def example():
+        return "Hello"
+    ```
+
+    Even **formatting** and [links](https://example.com) work!</code></pre>
+<p><strong>Result:</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Complex Content</p>
+<p>You can include multiple paragraphs in admonitions.</p>
+<ul>
+<li>Lists work too</li>
+<li>Second item</li>
+</ul>
+<pre class="highlight"><code class="language-python"># Code blocks are supported
+def example():
+    return "Hello"</code></pre>
+<p>Even <strong>formatting</strong> and <a href="https://example.com">links</a> work!</p>
+</div>
+<hr />
+<h2 id="blockquotes">Blockquotes</h2>
+<pre class="highlight"><code class="language-markdown">&gt; This is a blockquote.
+&gt; It can span multiple lines.
+
+&gt; Blockquotes can be nested
+&gt;&gt; Like this
+
+&gt; You can use **formatting** inside blockquotes
+&gt; 
+&gt; - And lists
+&gt; - Like this</code></pre>
+<p><strong>Result:</strong></p>
+<blockquote>
+<p>This is a blockquote.
+It can span multiple lines.</p>
+<p>Blockquotes can be nested</p>
+<blockquote>
+<p>Like this</p>
+</blockquote>
+<p>You can use <strong>formatting</strong> inside blockquotes</p>
+<ul>
+<li>And lists</li>
+<li>Like this</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="horizontal-rules">Horizontal Rules</h2>
+<pre class="highlight"><code class="language-markdown">---
+***
+___</code></pre>
+<p><strong>Result:</strong></p>
+<hr />
+<hr />
+<hr />
+<hr />
+<h2 id="html-elements">HTML Elements</h2>
+<p>The ReadTheDocs theme supports basic HTML elements:</p>
+<pre class="highlight"><code class="language-markdown">You can use &lt;strong&gt;HTML tags&lt;/strong&gt; in Markdown.
+
+&lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;C&lt;/kbd&gt;
+
+&lt;mark&gt;Highlighted text&lt;/mark&gt;
+
+&lt;small&gt;Small text&lt;/small&gt;</code></pre>
+<p><strong>Result:</strong></p>
+<p>You can use <strong>HTML tags</strong> in Markdown.</p>
+<p><kbd>Ctrl</kbd> + <kbd>C</kbd></p>
+<p><mark>Highlighted text</mark></p>
+<p><small>Small text</small></p>
+<hr />
+<h2 id="escaping-characters">Escaping Characters</h2>
+<pre class="highlight"><code class="language-markdown">\*This text is not italic\*
+\# This is not a header
+\[This is not a link\]
+\`This is not code\`</code></pre>
+<p><strong>Result:</strong></p>
+<p>*This text is not italic*<br />
+# This is not a header<br />
+[This is not a link]<br />
+`This is not code`</p>
+<hr />
+<h2 id="mkdocs-features-for-readthedocs-theme">MkDocs Features for ReadTheDocs Theme</h2>
+<h3 id="navigation">Navigation</h3>
+<p>Internal navigation uses relative paths:</p>
+<pre class="highlight"><code class="language-markdown">[Go to Home](index.md)
+[Go to About](about.md)
+[Link to section](format.md#headers)</code></pre>
+<h3 id="automatic-table-of-contents">Automatic Table of Contents</h3>
+<p>The ReadTheDocs theme automatically generates a table of contents in the sidebar based on your headers.</p>
+<h3 id="search">Search</h3>
+<p>The ReadTheDocs theme includes built-in search functionality that indexes all your content.</p>
+<hr />
+<h2 id="best-practices-for-readthedocs-theme">Best Practices for ReadTheDocs Theme</h2>
+<ol>
+<li><strong>Use clear header hierarchy</strong> - The theme generates navigation from headers</li>
+<li><strong>Keep file names simple</strong> - Use lowercase with hyphens: <code>my-guide.md</code></li>
+<li><strong>Use relative links</strong> for internal navigation</li>
+<li><strong>Add descriptive alt text</strong> to images</li>
+<li><strong>Test locally</strong> with <code>mkdocs serve</code> before deploying</li>
+<li><strong>Use consistent formatting</strong> throughout your documentation</li>
+<li><strong>Keep lines under 100 characters</strong> for better readability</li>
+</ol>
+<h2 id="readthedocs-theme-specific-notes">ReadTheDocs Theme Specific Notes</h2>
+<ul>
+<li><strong>Code highlighting</strong> works with the languages configured in <code>mkdocs.yml</code></li>
+<li><strong>Search</strong> is automatically enabled and indexes all content</li>
+<li><strong>Navigation</strong> is generated from the <code>nav</code> section in <code>mkdocs.yml</code></li>
+<li><strong>Mobile responsive</strong> design is built-in</li>
+<li><strong>Print-friendly</strong> styling is included</li>
+</ul>
+<h2 id="common-mistakes-to-avoid">Common Mistakes to Avoid</h2>
+<ul>
+<li>Don't use absolute paths for internal links</li>
+<li>Don't forget blank lines around code blocks and headers</li>
+<li>Don't mix different list styles in the same document</li>
+<li>Don't use complex HTML that might not render properly</li>
+<li>Don't forget to update navigation in <code>mkdocs.yml</code> when adding pages</li>
+</ul>
+<hr />
+<h2 id="supported-languages-for-code-highlighting">Supported Languages for Code Highlighting</h2>
+<p>Based on your <code>mkdocs.yml</code> configuration, these languages are highlighted:</p>
+<ul>
+<li><code>yaml</code> / <code>yml</code></li>
+<li><code>rust</code></li>
+<li><code>python</code> / <code>py</code></li>
+<li><code>c</code></li>
+<li><code>cpp</code> / <code>c++</code></li>
+<li><code>java</code></li>
+<li><code>bash</code> / <code>shell</code></li>
+<li><code>json</code></li>
+<li><code>markdown</code> / <code>md</code></li>
+</ul>
+<p>Example:
+<pre class="highlight"><code class="language-rust">fn main() {
+    println!("Hello, world!");
+}</code></pre></p>
+<hr />
+<p>This guide covers the essential Markdown syntax optimized for MkDocs with the ReadTheDocs theme. All examples are tested and work correctly with this setup.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../js/copy-code.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
