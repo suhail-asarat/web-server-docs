@@ -1,0 +1,43 @@
+site_name: Web Server Documentation
+
+# copyright: Authored by Mir Suhail Asarat
+
+nav:
+  # - Home: index.md
+  # - About: about.md
+  # - Formatting Guide: format.md
+  - Web Server Configuration:
+      - config/system.md
+      # - config/apache.md
+
+  - Web Hosting Documentation:
+      - hosting/ssh.md
+      - hosting/lamp.md
+
+theme:
+  name: readthedocs
+  locale: en
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+    - python
+    - c
+    - c++
+    - java
+    - python
+    - bash
+    - json
+    - md
+    - yaml
+
+markdown_extensions:
+  - footnotes
+  - pymdownx.extra
+  - admonition
+
+extra_css:
+  - css/custom.css
+
+extra_javascript:
+  - js/copy-code.js

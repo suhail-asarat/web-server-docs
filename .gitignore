@@ -1,0 +1,5 @@
+# exclude /site directory
+site/
+
+# exclude the venv directory
+docs-env/

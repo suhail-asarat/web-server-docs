@@ -1,0 +1,212 @@
+name: Deploy to Production Server
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    paths-ignore:
+      - 'README.md'
+      - '.github/**'
+      - 'docs/**/*.md'
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment (ignore branch restrictions)'
+        required: false
+        default: false
+        type: boolean
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "production-deploy"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for git info
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+            
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          
+      - name: Build MkDocs site
+        run: |
+          echo "🔨 Building MkDocs site..."
+          mkdocs build --verbose --clean --strict
+          
+          # Verify build output
+          if [ ! -d "site" ] || [ ! -f "site/index.html" ]; then
+            echo "❌ Build failed - site directory or index.html not found"
+            exit 1
+          fi
+          
+          echo "✅ Build completed successfully"
+          echo "📁 Site files:"
+          ls -la site/
+          
+      - name: Prepare deployment
+        run: |
+          # Create deployment info file
+          cat > site/deployment-info.json << EOF
+          {
+            "deployed_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "commit_sha": "${{ github.sha }}",
+            "commit_message": "${{ github.event.head_commit.message }}",
+            "workflow_run_id": "${{ github.run_id }}",
+            "deployed_by": "${{ github.actor }}",
+            "branch": "${{ github.ref_name }}"
+          }
+          EOF
+          
+          echo "📄 Deployment info created"
+          cat site/deployment-info.json
+          
+      - name: Setup SSH key
+        run: |
+          echo "🔑 Setting up SSH key..."
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # Add server to known hosts
+          if [ -n "${{ secrets.SSH_KNOWN_HOSTS }}" ]; then
+            echo "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          else
+            # Auto-accept host key (less secure but sometimes necessary)
+            ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          fi
+          
+          echo "✅ SSH key configured"
+          
+      - name: Deploy to production server
+        run: |
+          echo "🚀 Deploying to production server..."
+          
+          # Server configuration
+          SERVER_USER="${{ secrets.SERVER_USER }}"
+          SERVER_HOST="${{ secrets.SERVER_HOST }}"
+          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          
+          # Validate required secrets
+          if [ -z "$SERVER_USER" ] || [ -z "$SERVER_HOST" ] || [ -z "$SERVER_DIR" ]; then
+            echo "❌ Missing required secrets:"
+            echo "   - SERVER_USER: SSH username"
+            echo "   - SERVER_HOST: Server hostname/IP"
+            echo "   - SERVER_DIR: Target directory on server"
+            exit 1
+          fi
+          
+          echo "📡 Deploying to: $SERVER_USER@$SERVER_HOST:$SERVER_DIR"
+          
+          # Create backup of current deployment (optional)
+          if [ "${{ secrets.CREATE_BACKUP }}" = "true" ]; then
+            echo "💾 Creating backup..."
+            ssh "$SERVER_USER@$SERVER_HOST" "
+              if [ -d '$SERVER_DIR' ]; then
+                cp -r '$SERVER_DIR' '$SERVER_DIR.backup.$(date +%Y%m%d_%H%M%S)' || true
+                # Keep only last 5 backups
+                ls -dt '$SERVER_DIR'.backup.* 2>/dev/null | tail -n +6 | xargs rm -rf || true
+              fi
+            " || echo "⚠️ Backup creation failed (continuing anyway)"
+          fi
+          
+          # Create target directory if it doesn't exist
+          ssh "$SERVER_USER@$SERVER_HOST" "mkdir -p '$SERVER_DIR'"
+          
+          # Deploy files using SCP
+          echo "📤 Copying files to server..."
+          scp -r site/* "$SERVER_USER@$SERVER_HOST:$SERVER_DIR/"
+          
+          # Verify deployment
+          echo "🔍 Verifying deployment..."
+          REMOTE_INDEX_EXISTS=$(ssh "$SERVER_USER@$SERVER_HOST" "[ -f '$SERVER_DIR/index.html' ] && echo 'true' || echo 'false'")
+          
+          if [ "$REMOTE_INDEX_EXISTS" = "true" ]; then
+            echo "✅ Deployment successful!"
+            
+            # Optional: Set correct permissions
+            if [ -n "${{ secrets.FILE_PERMISSIONS }}" ]; then
+              ssh "$SERVER_USER@$SERVER_HOST" "chmod -R ${{ secrets.FILE_PERMISSIONS }} '$SERVER_DIR'"
+            fi
+            
+            # Optional: Restart web server
+            if [ -n "${{ secrets.RESTART_COMMAND }}" ]; then
+              echo "🔄 Restarting web server..."
+              ssh "$SERVER_USER@$SERVER_HOST" "${{ secrets.RESTART_COMMAND }}" || echo "⚠️ Restart command failed"
+            fi
+            
+          else
+            echo "❌ Deployment verification failed - index.html not found on server"
+            exit 1
+          fi
+          
+      - name: Post-deployment checks
+        run: |
+          echo "🔍 Running post-deployment checks..."
+          
+          SERVER_USER="${{ secrets.SERVER_USER }}"
+          SERVER_HOST="${{ secrets.SERVER_HOST }}"
+          SERVER_DIR="${{ secrets.SERVER_DIR }}"
+          
+          # Check deployment info
+          ssh "$SERVER_USER@$SERVER_HOST" "
+            if [ -f '$SERVER_DIR/deployment-info.json' ]; then
+              echo '📊 Deployment Info:'
+              cat '$SERVER_DIR/deployment-info.json'
+            fi
+          "
+          
+          # Optional: Test HTTP response
+          if [ -n "${{ secrets.SITE_URL }}" ]; then
+            echo "🌐 Testing site availability..."
+            sleep 5 # Give web server time to pick up changes
+            
+            HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.SITE_URL }}" || echo "000")
+            if [ "$HTTP_STATUS" = "200" ]; then
+              echo "✅ Site is responding correctly (HTTP $HTTP_STATUS)"
+            else
+              echo "⚠️ Site returned HTTP $HTTP_STATUS"
+            fi
+          fi
+          
+      - name: Cleanup
+        if: always()
+        run: |
+          echo "🧹 Cleaning up..."
+          rm -f ~/.ssh/id_rsa
+          echo "✅ Cleanup completed"
+          
+      - name: Deployment summary
+        if: always()
+        run: |
+          echo "📋 Deployment Summary"
+          echo "===================="
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Server: ${{ secrets.SERVER_HOST }}"
+          echo "Status: ${{ job.status }}"
+          echo "Time: $(date)"

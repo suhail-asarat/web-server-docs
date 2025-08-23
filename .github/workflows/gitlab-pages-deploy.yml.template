@@ -1,0 +1,98 @@
+name: Deploy to GitLab Pages
+
+on:
+  workflow_run:
+    workflows: ["Build and Update gl-pages branch"]
+    types:
+      - completed
+    branches: [ "main", "master" ]
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  trigger-gitlab-deployment:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    steps:
+      - name: Trigger GitLab Pages deployment
+        run: |
+          echo "🚀 Triggering GitLab Pages deployment..."
+          
+          # Replace these variables with your GitLab project details
+          GITLAB_PROJECT_ID="${{ secrets.GITLAB_PROJECT_ID }}"
+          GITLAB_TOKEN="${{ secrets.GITLAB_TOKEN }}"
+          GITLAB_URL="${{ secrets.GITLAB_URL || 'https://gitlab.com' }}"
+          
+          if [ -z "$GITLAB_PROJECT_ID" ] || [ -z "$GITLAB_TOKEN" ]; then
+            echo "❌ Missing required secrets:"
+            echo "   - GITLAB_PROJECT_ID: GitLab project ID"
+            echo "   - GITLAB_TOKEN: GitLab access token with API permissions"
+            echo ""
+            echo "📖 Setup instructions:"
+            echo "1. Go to your GitLab project → Settings → Access Tokens"
+            echo "2. Create a token with 'api' scope"
+            echo "3. Add GITLAB_TOKEN and GITLAB_PROJECT_ID to GitHub repository secrets"
+            echo "4. Optionally add GITLAB_URL if using self-hosted GitLab"
+            exit 1
+          fi
+          
+          # Trigger GitLab CI pipeline on gl-pages branch
+          RESPONSE=$(curl -X POST \
+            --header "PRIVATE-TOKEN: $GITLAB_TOKEN" \
+            --header "Content-Type: application/json" \
+            --data '{"ref": "gl-pages"}' \
+            --write-out "HTTP_STATUS:%{http_code}" \
+            --silent \
+            --output /tmp/gitlab_response.json \
+            "$GITLAB_URL/api/v4/projects/$GITLAB_PROJECT_ID/pipeline")
+          
+          HTTP_STATUS=$(echo $RESPONSE | tr -d '\n' | sed -e 's/.*HTTP_STATUS://')
+          
+          if [ "$HTTP_STATUS" -eq 201 ]; then
+            PIPELINE_ID=$(cat /tmp/gitlab_response.json | grep -o '"id":[0-9]*' | head -1 | cut -d':' -f2)
+            echo "✅ Successfully triggered GitLab Pages deployment!"
+            echo "   Pipeline ID: $PIPELINE_ID"
+            echo "   Pipeline URL: $GITLAB_URL/YOUR_USERNAME/YOUR_PROJECT/-/pipelines/$PIPELINE_ID"
+            echo "   Pages URL: https://YOUR_USERNAME.gitlab.io/YOUR_PROJECT"
+          else
+            echo "❌ Failed to trigger GitLab deployment"
+            echo "   HTTP Status: $HTTP_STATUS"
+            echo "   Response:"
+            cat /tmp/gitlab_response.json
+            exit 1
+          fi
+
+  deployment-status:
+    runs-on: ubuntu-latest
+    needs: trigger-gitlab-deployment
+    if: always()
+    
+    steps:
+      - name: Report deployment status
+        run: |
+          echo "📊 Deployment Summary"
+          echo "===================="
+          echo "GitHub Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo ""
+          
+          if [ "${{ needs.trigger-gitlab-deployment.result }}" = "success" ]; then
+            echo "✅ GitLab Pages deployment triggered successfully"
+            echo ""
+            echo "📝 Next steps:"
+            echo "1. Check GitLab CI/CD pipeline status"
+            echo "2. Verify deployment at your GitLab Pages URL"
+            echo "3. Test the deployed site functionality"
+          else
+            echo "❌ GitLab Pages deployment failed"
+            echo ""
+            echo "🔧 Troubleshooting:"
+            echo "1. Check GitLab project permissions"
+            echo "2. Verify GITLAB_TOKEN and GITLAB_PROJECT_ID secrets"
+            echo "3. Ensure gl-pages branch exists and has .gitlab-ci.yml"
+            echo "4. Check GitLab CI/CD is enabled for your project"
+          fi
