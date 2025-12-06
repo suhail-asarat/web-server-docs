@@ -4,6 +4,7 @@ mkdocs==1.6.1
 
 # MkDocs dependencies
 mkdocs-get-deps==0.2.0
+# mkdocs-with-pdf==0.9.3
 
 # Core dependencies
 click==8.2.1
